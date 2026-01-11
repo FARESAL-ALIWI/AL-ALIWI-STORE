@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Thank You - AL-ALIWI STORE</title>
+  <link rel="shortcut icon" href="public/images/fares.jpg" type="image/jpg">
+
+
+  <link rel="stylesheet" href="public/vendor/layout-f/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+
+    body{background:linear-gradient(180deg,#071022 0,#0b1220 100%);color:#e6eef8;font-family:'Cairo',Arial,Helvetica,sans-serif;margin:0}
+    .container{max-width:900px;margin:80px auto;padding:32px}
+    .card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.04);border-radius:12px;padding:28px}
+    .title{font-size:28px;color:#ffd166;font-weight:800;margin-bottom:8px}
+    .subtitle{color:#9fb0c6;margin-bottom:18px}
+    .order-hero{display:flex;justify-content:center;margin-bottom:14px}
+    .order-hero img{width:140px;height:140px;object-fit:cover;border-radius:12px;border:1px solid rgba(255,255,255,0.04)}
+    .order-meta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+    .order-meta .meta{background:rgba(255,255,255,0.02);padding:10px 12px;border-radius:8px;color:#dcecf6}
+    .items{margin-top:12px}
+    .item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px dashed rgba(255,255,255,0.03)}
+    .item img{width:64px;height:64px;object-fit:cover;border-radius:8px}
+    .item .name{font-weight:700}
+    .totals{margin-top:16px;padding-top:12px;border-top:1px dashed rgba(255,255,255,0.03);display:flex;flex-direction:column;gap:8px}
+    .totals .row{display:flex;justify-content:space-between;color:#cfe6f4}
+    .btns{display:flex;gap:12px;margin-top:18px}
+    .btn{padding:10px 16px;border-radius:8px;border:none;font-weight:700}
+    .btn-primary{background:linear-gradient(90deg,#22c1c3,#7be6e9);color:#04202a}
+    .btn-secondary{background:transparent;border:1px solid rgba(255,255,255,0.04);color:#e6eef8}
+    @media(max-width:600px){.container{margin:20px;padding:16px}}
+   .col-sm img { display: flex; width: 100px; height: 100px; border-radius: 50%; margin-right: 45%; margin-top: 30px;}
+
+  </style>
+
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+       <div class="col-sm">
+         <a href="index.html" class="footer-logo"><img src="public/images/fares.jpg"></a>
+       </div><br>
+      <div class="title">شكراً لطلبك من AL-ALIWI STORE ! </div>
+      <div class="subtitle">تم استلام طلبك بنجاح. تفاصيل الطلب مذكورة أدناه.</div>
+
+      <div id="order-hero" class="order-hero" aria-hidden="true"></div>
+
+      <div id="order-info" class="order-meta">
+        <div class="meta">رقم الطلب: <strong id="order-id"></strong></div>
+        <div class="meta">تاريخ: <strong id="order-date"></strong></div>
+        <div class="meta">الاسم: <strong id="order-name"></strong></div>
+        <div class="meta">البريد: <strong id="order-email"></strong></div>
+        <div class="meta">الهاتف: <strong id="order-phone"></strong></div>
+        <div class="meta">العنوان: <strong id="order-address"></strong></div>
+        <div class="meta">طريقة الدفع: <strong id="order-payment"></strong></div>
+        <div class="meta">المحفظة مستخدمة: <strong id="order-wallet"></strong></div>
+      </div>
+
+      <div class="items" id="order-items"></div>
+
+      <div class="totals">
+        <div class="row"><span>المجموع الفرعي</span><strong id="o-sub">$0.00</strong></div>
+        <div class="row"><span>الشحن</span><strong id="o-shipping">$0.00</strong></div>
+        <div class="row"><span>الضريبة</span><strong id="o-vat">$0.00</strong></div>
+        <div class="row" style="font-size:18px;color:#ffd166"><span>الإجمالي المدفوع</span><strong id="o-grand">$0.00</strong></div>
+      </div>
+
+      <div class="btns">
+        <a href="index.html" class="btn btn-primary">العودة للمتجر</a>
+        <a href="index.html" id="download-receipt" class="btn btn-secondary">تنزيل الإيصال (محاكاة)</a>
+      </div>
+    </div>
+  </div>
+
+    <script>
+    function fmtSAR(n){ return Number(n||0).toFixed(2) + ' $' }
+    const last = localStorage.getItem('last_order');
+    const itemsEl = document.getElementById('order-items');
+    if(!last){ itemsEl.innerHTML = '<p style="color:#9fb0c6">لا توجد بيانات للطلب.</p>'; }
+    else{
+      const order = JSON.parse(last);
+      document.getElementById('order-id').textContent = order.id || '';
+      document.getElementById('order-date').textContent = order.created_at ? new Date(order.created_at).toLocaleString() : '';
+
+      const customer = order.customer || {};
+      document.getElementById('order-name').textContent = customer.name || customer.fullname || '';
+      document.getElementById('order-email').textContent = customer.email || '';
+      document.getElementById('order-phone').textContent = customer.phone || '';
+      document.getElementById('order-address').textContent = customer.address || '';
+
+      const payment = order.payment || {};
+      document.getElementById('order-payment').textContent = (payment.method || '') + (payment.method==='card' ? ' (بطاقة)' : '');
+      document.getElementById('order-wallet').textContent = payment.used_wallet ? ('نعم - المبلغ: ' + fmtSAR(payment.wallet_used_amount||0)) : 'لا';
+
+      let items = [];
+      if(Array.isArray(order.items)) items = order.items;
+      else if(order.items && typeof order.items === 'object'){
+        items = Object.keys(order.items).map(k=> order.items[k]);
+      }
+
+      itemsEl.innerHTML = '';
+      items.forEach(it=>{
+        const name = it.name || it.title || '';
+        const qty = it.quantity || it.qty || it.count || 1;
+        const price = Number(it.price || it.unit_price || 0);
+        const img = it.image || it.img || '';
+        const isFull = img && (img.startsWith('http') || img.startsWith('data:') || img.startsWith('/') || img.startsWith('public/'));
+        const imgSrc = img ? (isFull ? img : ('public/images/products/'+img)) : 'public/images/placeholder.png';
+        const div = document.createElement('div'); div.className='item';
+        div.innerHTML = `<img src="${imgSrc}" alt="${name}"><div style="flex:1;min-width:0"><div class="name">${name}</div><div style="color:#9fb0c6;font-size:13px">الكمية: ${qty} × ${fmtSAR(price)}</div></div><div style="font-weight:800">${fmtSAR((qty*price).toFixed(2))}</div>`;
+        itemsEl.appendChild(div);
+      });
+
+      const heroEl = document.getElementById('order-hero');
+      if(heroEl){
+        if(items.length>0){
+          const first = items[0];
+          const img = first.image || first.img || '';
+          const isFull = img && (img.startsWith('http') || img.startsWith('data:') || img.startsWith('/') || img.startsWith('public/'));
+          const imgSrc = img ? (isFull ? img : ('public/images/products/'+img)) : 'public/images/placeholder.png';
+          heroEl.innerHTML = `<img src="${imgSrc}" alt="${(first.name||first.title||'منتج')}">`;
+          heroEl.setAttribute('aria-hidden','false');
+        } else {
+          heroEl.innerHTML = '';
+          heroEl.setAttribute('aria-hidden','true');
+        }
+      }
+
+      const totals = order.totals || {};
+      const subtotal = totals.subtotal !== undefined ? totals.subtotal : items.reduce((s,i)=> s + (Number(i.price||0)*(Number(i.quantity||i.qty||1))), 0);
+      const shipping = totals.shipping !== undefined ? totals.shipping : 0;
+      const vat = totals.vat !== undefined ? totals.vat : +(subtotal*0.15).toFixed(2);
+      const grand = totals.grand !== undefined ? totals.grand : +(subtotal + shipping + vat).toFixed(2);
+
+      document.getElementById('o-sub').textContent = fmtSAR(subtotal);
+      document.getElementById('o-shipping').textContent = fmtSAR(shipping);
+      document.getElementById('o-vat').textContent = fmtSAR(vat);
+      document.getElementById('o-grand').textContent = fmtSAR(grand);
+    }
+
+    document.getElementById('download-receipt').addEventListener('click',e=>{
+      e.preventDefault(); alert('تحميل الإيصال محاكاة. يمكنك طباعة الصفحة');
+      window.print();
+    });
+  </script>
+
+</body>
+</html>

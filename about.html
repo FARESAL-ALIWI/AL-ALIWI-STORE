@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AL-ALIWI Store</title>
+    <link rel="shortcut icon" href="public/images/fares.jpg" type="image/jpg">
+    <link rel="stylesheet" href="public/css/style1.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="public/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro:400,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="public/vendor/layout-f/icomoon/style.css">
+    <link rel="stylesheet" href="public/vendor/layout-f/bootstrap.min.css">
+    <link rel="stylesheet" href="public/vendor/layout-f/footer.css">
+<style>
+        .about-section-advanced {
+         position: relative;
+         color: #fff;
+         font-family: Arial, sans-serif;
+         padding: 100px 20px 60px 20px;
+         overflow: hidden;}
+        .about-section-advanced .container {
+         position: relative;
+         max-width: 1200px;
+         margin: 0 auto;
+         z-index: 1;
+         display: grid;
+         grid-template-columns: 1fr 1fr 1fr;
+         gap: 40px;}
+        /* Fade-in animation */
+        .fade-in {
+         opacity: 0;
+         transform: translateY(20px);
+         transition: all 0.8s ease-out;
+        }
+        .fade-in.visible {
+         opacity: 1;
+         transform: translateY(0);}
+           /* Text */
+        .about-intro h2 {
+         font-size: 32px;
+         color: #ff6600;
+         margin-bottom: 20px;}
+        .about-intro p {
+         line-height: 1.6;
+         margin-bottom: 15px;
+         color: Black;}
+           /* Further Information */
+        .about-info h3 {
+         font-size: 24px;
+         margin-bottom: 15px;
+         color: black;}
+        .about-info ul {
+         list-style: none;
+         padding: 0;}
+        .about-info li {
+         margin-bottom: 10px;
+         font-size: 16px;
+         transition: transform 0.3s, background 0.3s;
+         border-radius: 8px;
+         padding: 8px;
+         cursor: pointer;
+         color:black;
+         border:solid 1px;}
+        .about-info li:hover {
+         background-color: #ff6600;
+         color: #fff;
+         transform: translateX(5px);}
+        .about-info a { text-decoration: none; color: inherit; }
+           /* Customers */
+        .about-customers h3 { font-size: 24px; margin-bottom: 15px; color: #fff; }
+        .customer-card {
+         background: linear-gradient(to left, #111827, #1e293b);
+         padding: 15px 20px;
+         margin-bottom: 15px;
+         border-radius: 12px;
+         box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+         transition: transform 0.3s, box-shadow 0.3s;}
+        .customer-card:hover {
+         transform: translateY(-5px);
+         box-shadow: 0 8px 20px rgba(30,0,0,0.5);}
+       .store-images img {
+         width: 100px;
+         max-width: 100px;
+         border-radius: 12px;
+        transition: transform 0.3s;}
+        .store-images img:hover {
+         transform: scale(1.05);}
+    @media(max-width: 900px) {
+       .about-section-advanced .container {
+        grid-template-columns: 1fr;
+        gap: 30px; }
+       .store-images {
+        display:flex;
+        flex-wrap:wrap;
+        justify-content:center;
+     }}
+        /* Services Section */
+           .section-services{margin: 0; padding: 0;}
+           .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px; }
+            .service-card {
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            text-align: center; }
+
+            .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);}
+
+            .service-card i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 20px; }
+            .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            }
+            .services-title{
+                text-align:center;
+                font-size:30px;
+            }
+            .service-subtitle{
+                margin-left: 35%;
+                font-size: 31px;
+            }
+
+             /* WhatsApp Float */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 20px;
+            right: 2.5rem;
+            background: #25d366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+        
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+
+        .team-section {
+           padding: 80px 0;
+           background-color: #f9f9f9;
+        }
+        .section-title {
+           text-align: center;
+           margin-bottom: 50px;
+           font-size: 32px;
+           color: #333;
+           position: relative;
+        }
+       .section-title:after {
+           content: '';
+           display: block;
+           width: 80px;
+           height: 3px;
+           background: #ff6b6b;
+           margin: 15px auto;
+        }
+       .team-grid {
+           display: grid;
+           grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+           gap: 30px;
+           max-width: 1200px;
+           margin: 0 auto;
+        }
+       .team-member {
+         border-radius: 10px;
+         overflow: hidden;
+         box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+         transition: transform 0.3s ease;
+         text-align: center;
+         padding-bottom: 20px;
+         background: white;
+       }
+      .team-member:hover {
+         transform: translateY(-10px);
+      }
+      .member-image {
+        overflow: hidden;
+        height: 250px;
+      }
+      .member-image img {
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+        width: 100%;
+     }
+      .team-member:hover .member-image img {
+        transform: scale(1.1);
+     } 
+      .team-member h3 {
+        color: #333;
+        margin: 20px 0 5px;
+     }
+      .member-role {
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #ff6b6b;
+     }
+     .member-bio {
+       font-size: 14px;
+       color: #666;
+       padding: 0 20px;
+    }
+   @media (max-width: 768px) {
+      .team-grid {
+       grid-template-columns: 1fr;
+    }
+   }
+</style>
+
+</head>
+<body>
+    <header id="header">
+    <div id="overlay" class="overlay"></div>
+    <nav class="navbar">
+           <h2>AL-ALIWI</h2>
+        <div class="logo">
+        <img src="public/images/fares.jpg" alt="Logo" class="logo-img">
+        </div>
+        <ul class="nav-links-desktop">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="index.html#products">Products</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="index.html#test">Testimonials</a></li>
+        </ul>
+        <div class="search-box-2">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" class="search-input" placeholder="What are you looking for?">
+        </div>
+        <div class="nav-controls">
+           <button id="login-btn" class="nav-btn login-btn"><a href="index.html">
+              <i class="fas fa-user"></i></a>
+            </button>
+            <button id="cart-toggle" class="nav-btn cart-btn">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-badge">0</span>
+            </button>
+            <button id="menu-toggle" class="nav-btn menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+    <div id="right-sidebar" class="sidebar right-sidebar">
+        <div class="sidebar-header">
+            <h3>Menu</h3>
+            <button id="close-menu" class="close-btn">&times;</button>
+        </div>
+        <ul class="sidebar-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="index.html/#productd">Products</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="index.html#Test">Testimonials</a></li>
+        </ul>
+    </div>
+   <aside id="left-sidebar" class="sidebar left-sidebar">
+    <div class="sidebar-header">
+        <h3>Shopping Cart</h3>
+        <button id="close-cart" class="close-btn">&times;</button><br>
+    </div>
+    <div id="cart-preview-content" class="cart-content">
+        <p class="empty-cart-message">Your cart is empty.</p>
+    </div>
+    <div class="cart-footer">
+        <div class="cart-total">
+            <span>Total:</span>
+            <span id="cart-preview-total">$0.00</span>
+        </div>
+        <a href="cart.html" class="checkout-btn">View Cart & Checkout</a>
+    </div>
+</aside>
+ <main>
+</header>
+<section class="slider-container" id="home">
+    <div class="slider">
+        <div class="slide active">
+            <img src="public/images/about/about1.png" alt="Special Offer on iPhones">
+            <div class="slide-caption">
+                <a href="index.html#products" class="btn1">Shop Now</a>
+            </div>
+        </div>
+        <div class="slide">
+            <img src="public/images/about/about2.png" alt="New Samsung Galaxy">
+            <div class="slide-caption">
+                <a href="index.html#products" class="btn1">Explore</a>
+            </div>
+        </div>
+        <div class="slide">
+            <img src="public/images/about/company.png" alt="Store Wide Sale">
+            <div class="slide-caption">
+                <h2>The company</h2>
+                <a href="index.html#products" class="btn1">View Deals</a>
+            </div>
+        </div>
+    </div>
+    <button class="slider-btn prev-btn"><i class="fas fa-chevron-left"></i></button>
+    <button class="slider-btn next-btn"><i class="fas fa-chevron-right"></i></button>
+    <div class="slider-dots">
+        <span class="dot active" data-slide="0"></span>
+        <span class="dot" data-slide="1"></span>
+        <span class="dot" data-slide="2"></span>
+    </div>
+</section><br><hr>
+<section class="about-section-advanced">
+  <div class="container">
+    <div class="about-intro fade-in">
+      <h2> About AL-ALIWI STORE  :</h2>
+      <p>
+        AL-ALIWI STORE FOR SMART PHONES هو وجهتك الأولى للحصول على أحدث الهواتف الذكية وأكسسواراتها عالية الجودة.
+        نقدم منتجات أصلية وتجربة شراء سلسة وآمنة، مع دعم مستمر لعملائنا الكرام.
+      </p>
+    </div>
+    <div class="about-info fade-in">
+      <h3>Further Information</h3>
+      <ul>
+        <li>📜 <a href="#terms conditions">Terms & Conditions</a></li>
+        <li>🔒 <a href="#privacy policy">Privacy Policy</a></li>
+        <li>💼 <a href="#careers">Careers</a></li>
+      </ul>
+    </div>
+
+    <div class="about-customers fade-in">
+      <h3>Customer</h3>
+      <div class="customer-card">
+        🛒 <strong>Buyer:</strong> تجربة شراء سلسة، منتجات أصلية، ودعم مستمر قبل وبعد الشراء.
+      </div>
+      <div class="customer-card">
+        📦 <strong>Supplier:</strong> شراكات قوية مع الموردين لضمان وصول أفضل المنتجات بجودة عالية وأسعار عادلة.
+    <div class="store-images fade-in"><br>
+      <img src="public/images/about/shope1.png" alt="Phone1">
+      <img src="public/images/about/shope2.png" alt="Phone2">
+      <img src="public/images/about/shope3.png" alt="Accessory">
+    </div>
+  </div>
+</section>
+
+<!-- Team Section -->
+<section class="team-section">
+  <div class="container">
+    <h2 class="section-title">Meet Our Expert Team</h2>
+    <div class="team-grid">
+      <div class="team-member">
+        <div class="member-image">
+          <img src="public/images/about/fares.jpg" alt="Team Member">
+        </div>
+        <h3>Fares AL-aliwi</h3>
+        <p class="member-role">Founder & CEO</p>
+        <p class="member-bio">Tech visionary with over 10 years of experience in the mobile industry.</p>
+      </div>
+      <div class="team-member">
+        <div class="member-image">
+          <img src="public/images/about/faressoft.png" alt="Team Member">
+        </div>
+        <h3>Fares Soft</h3>
+        <p class="member-role">Customer Experience Manager</p>
+        <p class="member-bio">Dedicated to ensuring every customer receives exceptional service.</p>
+      </div>
+      <div class="team-member">
+        <div class="member-image">
+          <img src="public/images/about/engineer.jpg" alt="Team Member">
+        </div>
+        <h3>Faisal Al-aliwi</h3>
+        <p class="member-role">Technology Engineer</p>
+        <p class="member-bio">Expert in smartphone technology and troubleshooting.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+    <section id="services" class="section-services">
+        <div class="service-container">
+            <h2 class="services-title">Our <span>Services</span></h2>
+            <p class="service-subtitle">What we offer to AL-aliwi Store </p>
+            <div class="services-grid">
+                <div class="service-card">
+                    <i class="icon-stars e8d0"></i>
+                    <h3>نحن نتميز بـ</h3>
+                    <p>منتجات أصلية مع ضمان الجودة</p>
+                    <p>عروض مميزة وأسعار تنافسية </p>
+                    <p>خدمة عملاء سريعة ومتجاوية على 24/7</p>
+                </div>
+
+                <div class="service-card">
+                    <i class="icon-people e7fb"></i>
+                    <h3> العملاء</h3>
+                    <h4> ؛ Buyer - المشترين</h4>
+                    <p>  نقدم لهم تجربة شراء سلسلة , منتجات أصلية و ودعم مستمر قبل وبعد الشراء </p>
+                </div>
+
+                <div class="service-card">
+                    <i class="icon-shop e8c9"></i>
+                    <h3>؛ Supplier - الموردين</h3>
+                    <p>نسعئ لبناء شراكات قوية مع الموردين لضمان وصول أفضل المنتجات بجودة عالية وأسعار عادلة</p>
+                </div>
+
+                <div class="service-card">
+                    <i class="icon-store_mall_directory e563"></i>
+                    <h3>With Al-aliwi Store</h3>
+                    <p>يمكنك استكشاف تشكيلة واسعة من الهواتف الذكية من أبراو العلامات التجارية  , با لإضافة إلى ملحقات  مبتكرة تلبي جميع احتياجاتك</p>
+                </div>
+
+                <div class="service-card">
+                    <i class="icon-legal f0e3" id="terms conditions"></i>
+                    <h3>Terms & Conditions ؛</h3>
+                    <p>تعرف على شروط وأحكام استخدام متجرنا , بما في ذلك حقوقك وواجباتك كمشتري  نحن نحرص على الشفافية و العدالة في كل صفقة </p>
+                </div>
+
+                <div class="service-card">
+                    <i class="icon-security e32a" id="privacy policy"></i>
+                    <h3>Privacy Policy</h3>
+                    <p>خصوصيتك مهمة بالنسبة لنا . نوضح كيفية حماية معلوماتك الشخصية أثناء تصفحك و شراء منتجاتنا .</p>
+                </div>
+                <div class="service-card">
+                    <i class="icon-briefcase f0b1" id="careers"></i>
+                    <h3>Careers</h3>
+                    <p> هل ترغب في الانضمام لفريقنا ؟ اكتشف فرص العمل المتاحة لدينا في مختلف الأقسام وكن جزاء من رحلة AL-aliwi Stroe نحو التميز في قطاع الهواتف الذكية </p>
+                </div>
+                <div class="service-card">
+                    <i class="icon-security e32a"></i>
+                    <h3>Privacy Policy</h3>
+                    <p>خصوصيتك مهمة بالنسبة لنا . نوضح كيفية حماية معلوماتك الشخصية أثناء تصفحك و شراء منتجاتنا .</p>
+                </div>
+            </div>
+        </div>
+    </section><br><br><br>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+  const header = document.querySelector('header');
+
+  window.addEventListener('scroll', () => {
+    if (header) {
+      header.classList.toggle('scrolled', window.scrollY > 0);
+    }
+  });
+});
+</script>
+
+<script>
+const faders = document.querySelectorAll('.fade-in');
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if(entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.2 });
+faders.forEach(fader => observer.observe(fader));
+</script>
+</section><br><br>
+
+<a href="https://wa.me/+967782295668?text=مرحباً، أرغب في الاستفسار عن الخدمات"
+     onclick="window.open(this.href,'whatsappchat','width=400,height=600'); return false;"  class="whatsapp-float">
+      <i class="fab fa-whatsapp"></i>
+    </a>
+
+<footer class="footer-20192">
+    <div class="site-section">
+        <div class="container">
+
+            <div class="cta d-block d-md-flex align-items-center px-5">
+                <div>
+                    <h2 class="mb-0">Ready for New Technology?</h2>
+                    <h3 class="text-dark">Let's get started!</h3>
+                </div>
+                <button class="footer-btn" ><a href="contact.html" class="btn btn-dark rounded-0 py-3 px-5">Contact us</a></button>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <img src="public/images/fares.jpg">
+                    <a href="welcome" class="footer-logo"> AL-ALIWI</a>
+                    <p class="copyright">
+                        <small>&copy; 2025  Designed By : FARES AL-ALIWI</small> </p>
+                </div>
+                <div class="col-sm">
+                    <h3>Customers</h3>
+                    <ul class="list-unstyled links">
+                        <li><a href="about.html">Buyer</a></li>
+                        <li><a href="about.html">Supplier</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm">
+                    <h3>Company</h3>
+                    <ul class="list-unstyled links">
+                        <li><a href="about.html">About us</a></li>
+                        <li><a href="about.html">Careers</a></li>
+                        <li><a href="contact.html">Contact us</a></li> </ul> </div>
+                <div class="col-sm">
+                    <h3>Further Information</h3>
+                    <ul class="list-unstyled links">
+                        <li><a href="about.html">Terms &amp; Conditions</a></li>
+                        <li><a href="about.html">Privacy Policy</a></li>
+                    </ul></div>
+                <div class="col-md-3">
+                    <h3>Follow us</h3>
+                    <ul class="social-icons">
+                        <li class="icon-content">
+                            <a
+                                href="https://www.linkedin.com/in/fares-al-aliwi-3ba613397?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank"
+                                aria-label="LinkedIn"
+                                data-social="linkedin">
+                                <div class="filled"></div>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    fill="currentColor"
+                                    class="bi bi-linkedin"
+                                    viewBox="0 0 16 16"
+                                    xml:space="preserve">
+        <path
+            d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"
+            fill="currentColor"></path></svg></a>
+                            <div class="tooltip">LinkedIn</div> </li>
+                        <li class="icon-content">
+                            <a href="https://github.com/FARESAL-ALIWI" target="_blank" aria-label="GitHub" data-social="github">
+                                <div class="filled"></div>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    fill="currentColor"
+                                    class="bi bi-github"
+                                    viewBox="0 0 16 16"
+                                    xml:space="preserve" >
+        <path
+            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"
+            fill="currentColor"></path> </svg> </a>
+                            <div class="tooltip">GitHub</div></li>
+                        <li class="icon-content">
+                            <a
+                                href="https://www.instagram.com/f.s_tech?igsh=dndzYXB1bmUwaHc2" target="_blank"
+                                aria-label="Instagram"
+                                data-social="instagram">
+                                <div class="filled"></div>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    fill="currentColor"
+                                    class="bi bi-instagram"
+                                    viewBox="0 0 16 16"
+                                    xml:space="preserve" >
+        <path
+            d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334"
+            fill="currentColor"></path>  </svg> </a>
+                            <div class="tooltip">Instagram</div> </li>
+                        <li class="icon-content">
+                            <a href="https://www.facebook.com/share/1AGATUtK5T/" target="_blank" aria-label="Youtube" data-social="youtube">
+                                <div class="filled"></div>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    fill="currentColor"
+                                    class="bi bi-facebook"
+                                    viewBox="0 0 16 16"
+                                    xml:space="preserve">
+        
+            <path d="M12 2h-2a3 3 0 0 0-3 3v2H5v2h2v6h2v-6h2.5l.5-2H9V5a1 1 0 0 1 1-1h2V2z" fill="currentColor"></path></svg></a>
+                            <div class="tooltip">Facebook</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</main>
+
+    <script src="public/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="public/script/script.js"></script>
+    <script src="public/vendor/jquery/jquery.min.js"></script>
+    <script src='https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js'></script>
+    <script src='https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js'></script>
+    <script src="public/vendor/layout-f/jquery-3.3.1.min.js"></script>
+    <script src="public/vendor/layout-f/popper.min.js"></script>
+    <script src="public/vendor/layout-f/bootstrap.min.js"></script>
+
+</body>
+</html>

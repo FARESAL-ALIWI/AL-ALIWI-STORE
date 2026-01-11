@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AL-ALIWI — Cart</title>
+    <link rel="shortcut icon" href="public/images/fares.jpg" type="image/jpg">
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-gold: #0b5fb8;
+            --light-gold: #daa520;
+            --accent-gold: #ffd700;
+            --dark-color: #1a1a1a;
+            --light-color: #f8f8f8;
+            --gray-color: #666;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 8px 25px rgba(184, 134, 11, 0.3);
+            --success-color: #28a745;
+            --error-color: #dc3545;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background-color: #fff; color: var(--dark-color); line-height: 1.6; overflow-x: hidden; }
+        .page-fade { animation: fadeIn 0.8s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .container { width:100%; max-width:1200px; margin:0 auto; padding:0 20px; }
+
+        .site-header { background-color: #fff; box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000; }
+        .header-inner { display:flex; justify-content:space-between; align-items:center; padding:15px 0; }
+        .logo { display:flex; align-items:center; text-decoration:none; }
+        .logo img { height:50px; margin-left:10px }
+        .logo-text { font-family: 'Montserrat', sans-serif; font-weight:700; font-size:28px; color:var(--primary-gold); }
+        .main-nav { display:flex; gap:25px }
+        .main-nav a { text-decoration:none; color:var(--dark-color); font-weight:600 }
+        .main-nav a:hover { color:var(--primary-gold) }
+        .header-actions { display:flex; gap:15px; align-items:center }
+        .icon-btn { background:none; border:none; font-size:20px; cursor:pointer; color:var(--dark-color) }
+
+        .section { padding:80px 0 }
+        .section-title { font-size:2.5rem; font-weight:700; text-align:center; margin-bottom:50px; color:var(--dark-color) }
+
+        .cart-container { display:grid; grid-template-columns: 1fr 300px; gap:40px }
+        .cart-list { background:#fff; border-radius:10px; box-shadow:var(--shadow); overflow:hidden }
+        .cart-item { display:flex; padding:20px; border-bottom:1px solid #eee; align-items:center }
+        .cart-item:last-child { border-bottom:none }
+        .cart-item-img { width:120px; height:120px; object-fit:cover; border-radius:8px; margin-left:20px }
+        .cart-item-details { flex:1; display:flex; flex-direction:column; justify-content:space-between }
+        .cart-item-title { font-size:1.2rem; font-weight:600 }
+        .cart-item-price { color:var(--primary-gold); font-weight:700 }
+        .cart-item-actions { display:flex; align-items:center; gap:15px }
+        .quantity-control { display:flex; align-items:center; border:1px solid #ddd; border-radius:30px; overflow:hidden }
+        .quantity-btn { background:none; border:none; width:35px; height:35px; display:flex; align-items:center; justify-content:center; cursor:pointer }
+        .quantity-btn:hover { background:var(--primary-gold); color:#fff }
+        .quantity-input { width:50px; text-align:center; border:none; font-weight:600 }
+        .remove-btn { background:none; border:none; color:var(--gray-color); cursor:pointer }
+        .remove-btn:hover { color:#e74c3c }
+
+        .cart-summary { background:#fff; border-radius:10px; padding:25px; box-shadow:var(--shadow); position:sticky; top:100px }
+        .cart-summary h3 { font-size:1.5rem; margin-bottom:20px; color:var(--primary-gold) }
+        .summary-items { display:flex; flex-direction:column; gap:12px; max-height:180px; overflow:auto; margin-bottom:12px; padding-right:6px }
+        .summary-item { display:flex; gap:10px; align-items:center }
+        .summary-item .s-thumb{ width:54px; height:54px; border-radius:8px; overflow:hidden; background:#f4f4f4; display:inline-flex; align-items:center; justify-content:center; border:1px solid #eee }
+        .summary-item .s-thumb img{ width:54px; height:54px; object-fit:cover }
+        .summary-item .s-meta{ flex:1; min-width:0 }
+        .summary-item .s-name{ font-weight:700; font-size:0.95rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+        .summary-item .s-qty{ color:var(--gray-color); font-size:0.85rem }
+        .summary-item .s-line{ font-weight:800; color:var(--primary-gold); min-width:80px; text-align:left }
+        .estimate { font-size:0.95rem; color:var(--gray-color); margin-top:6px }
+        .checkout-btn { display:block; margin-top:18px; padding:14px; border-radius:12px; text-decoration:none; color:#04202a; font-weight:900; background: linear-gradient(90deg,var(--primary-gold),var(--light-gold)); box-shadow: var(--shadow); text-align:center }
+        .checkout-amount { font-weight:900; margin-left:8px; }
+        .payment-panel{ margin-top:18px; border-radius:10px; padding:14px; background:linear-gradient(180deg,#fff,#fbfbfb); border:1px solid #f0f0f0 }
+        .payment-methods{ display:flex; flex-direction:column; gap:8px }
+        .payment-option{ display:flex; align-items:center; gap:10px; padding:10px; border-radius:8px; border:1px solid #eee; background:#fff }
+        .payment-option input{ transform:scale(1.1) }
+        .wallet-info{ display:flex; justify-content:space-between; align-items:center; padding:10px; background:linear-gradient(90deg,rgba(11,95,184,0.06),rgba(218,165,32,0.03)); border-radius:8px; margin-top:8px }
+        .wallet-balance{ font-weight:800; color:var(--primary-gold) }
+        .card-fields{ margin-top:10px; display:none; gap:8px }
+        .summary-row { display:flex; justify-content:space-between; margin-bottom:15px }
+        .summary-row.total { font-size:1.2rem; font-weight:700; margin-top:20px; padding-top:15px; border-top:2px solid #eee }
+        .coupon-section { background:var(--light-color); border-radius:8px; padding:15px; margin-bottom:20px }
+        .coupon-form { display:flex; gap:10px }
+        .coupon-form input { flex:1; padding:10px; border:1px solid #ddd; border-radius:5px }
+        .coupon-form button { padding:0 15px; background:var(--primary-gold); color:#fff; border:none; border-radius:5px; cursor:pointer }
+        .coupon-message.success{ color:var(--success-color) }
+        .coupon-message.error{ color:var(--error-color) }
+        .save-cart { display:block; width:100%; padding:10px; background:transparent; color:var(--primary-gold); border:1px solid var(--primary-gold); border-radius:5px; cursor:pointer; font-weight:600; margin-top:15px }
+        .btn { display:inline-block; padding:12px 30px; background:var(--primary-gold); color:#fff; border-radius:30px; text-decoration:none; font-weight:600; width:100%; text-align:center; border:none }
+        .btn-secondary { background:transparent; color:var(--primary-gold); border:1px solid var(--primary-gold) }
+
+        .empty-cart { text-align:center; padding:60px 20px; background:#fff; border-radius:10px; box-shadow:var(--shadow) }
+
+        .site-footer { background: linear-gradient(135deg, var(--dark-color) 0%, #0a0a0a 100%); color:#fff; padding:30px 0 }
+        .copyright { color:#aaa; text-align:center }
+        .site-footer h3,h4{ text-align: center; margin-top: 20px;}
+        .col-sm img { display: flex; width: 100px; height: 100px; border-radius: 50%; margin-right: 47%; margin-top: 30px;}
+        .social-links { display: flex; margin-top: 30px; justify-content: center;}
+        .social-links a { width: 50px; height: 50px; background-color: var(--light-color); color: var(--dark-color); border-radius: 50%; display: flex; justify-content: center; align-items: center;  margin-right: 15px; transition: var(--transition); font-size: 1.2rem; }
+        .social-links a:hover { background-color: var(--primary-color); color: var(--white); transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1);}
+
+        .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center }
+        .modal.active{ display:flex }
+        .modal-content { background:#fff; border-radius:10px; padding:30px; max-width:500px; width:90%; text-align:center }
+
+        .notification { position:fixed; bottom:20px; left:20px; padding:15px 20px; border-radius:5px; box-shadow:var(--shadow); z-index:1000 }
+        .notification.success{ background:var(--success-color); color:#fff }
+        .notification.error{ background:var(--error-color); color:#fff }
+
+        @media(max-width:992px){ .cart-container{ grid-template-columns:1fr } .cart-summary{ position:static } }
+        @media(max-width:768px){ .cart-item{ flex-direction:column; align-items:center; text-align:center } .cart-item-img{ margin-left:0; margin-bottom:15px } }
+    </style>
+    <script defer src="assets/js/app.js"></script>
+</head>
+<body class="page-fade">
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="logo" href="index.html">
+                <img src="public/images/fares.jpg" alt="AL-ALIWI Logo" style="border-radius: 40%;">
+                <span class="logo-text">AL-ALIWI</span>
+            </a>
+            <nav class="main-nav">
+                <a href="index.html">الرئيسية</a>
+                <a href="index.html#products">المنتجات</a>
+                <a href="index.html#home">العروض</a>
+                <a href="contact.html">تواصل معنا</a>
+            </nav>
+            <div class="header-actions">
+                <a href="cart.html" class="icon-btn cart-btn" aria-label="سلة"><i class="fas fa-shopping-cart"></i><span id="cartCount" style="display:none"></span></a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container section">
+        <h1 class="section-title">سلة التسوق</h1>
+        <div class="cart-container">
+            <div class="cart-list" id="cartList"></div>
+
+            <div class="cart-summary">
+                <h3>ملخص الطلب</h3>
+                <div class="coupon-section">
+                    <h4>كود الخصم</h4>
+                    <div class="coupon-form">
+                        <input type="text" id="couponCode" placeholder="أدخل كود الخصم">
+                        <button type="button" id="applyCoupon">تطبيق</button>
+                    </div>
+                    <div id="couponMessage" class="coupon-message"></div>
+                </div>
+                 
+                <div id="summaryItems" class="summary-items" aria-live="polite"></div>
+                <div class="estimate">توصيل متوقع: <strong id="deliveryEstimate">2-3 أيام</strong></div>
+
+                <div class="summary-row"><span>المجموع الجزئي:</span><span id="subtotal">$0</span></div>
+                <div class="summary-row"><span>الضريبة (10%):</span><span id="vat">$0</span></div>
+                <div class="summary-row"><span>الخصم:</span><span id="discount">$0</span></div>
+                <div class="summary-row"><span>الشحن:</span><span id="shipping">مجاني</span></div>
+                <div class="summary-row total"><span>الإجمالي:</span><span id="total">$0</span></div>
+
+                <div class="payment-panel">
+                    <strong>طريقة الدفع</strong>
+                    <div class="payment-methods">
+                        <label class="payment-option"><input type="checkbox" id="useWallet"> استخدم المحفظة</label>
+                        <div class="wallet-info" id="walletInfo" style="display:none"><div>رصيد المحفظة</div><div class="wallet-balance" id="walletBalance">$0</div></div>
+                        <label class="payment-option"><input type="radio" name="pay_method" value="cod" checked> الدفع عند الاستلام</label>
+                        <label class="payment-option"><input type="radio" name="pay_method" value="bank"> تحويل بنكي</label>
+                        <label class="payment-option"><input type="radio" name="pay_method" value="card"> بطاقة ائتمان</label>
+                        <div class="card-fields" id="cardFields">
+                            <input type="text" id="cardName" placeholder="اسم صاحب البطاقة" style="padding:8px;border:1px solid #ddd;border-radius:6px;width:100%">
+                            <input type="text" id="cardNumber" placeholder="رقم البطاقة" style="padding:8px;border:1px solid #ddd;border-radius:6px;width:100%">
+                            <div style="display:flex;gap:8px"><input type="text" id="cardExp" placeholder="MM/YY" style="flex:1;padding:8px;border:1px solid #ddd;border-radius:6px"><input type="text" id="cardCvc" placeholder="CVC" style="width:120px;padding:8px;border:1px solid #ddd;border-radius:6px"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="save-cart" id="saveCart">حفظ السلة لوقت لاحق</button>
+                <a id="checkoutBtn" href="#" class="checkout-btn">إتمام الطلب — <span id="checkoutAmount" class="checkout-amount">$0 </span></a>
+                <a href="index.html" class="btn btn-secondary">مواصلة التسوق</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+                <div class="copyright">© 2025 AL-ALIWI. جميع الحقوق محفوظة.</div>
+                 <h3>شكراً لطلبك من AL-ALIWI STORE </h3>
+                 <h4>كما يمكنك متابعتنا على وسائل التواصل الأجتماعي</h4>
+              </div>
+              <div class="col-sm">
+                    <a href="index.html" class="footer-logo"><img src="public/images/fares.jpg"></a>
+                </div>
+              <div class="social-links">
+                 <a href="https://github.com/FARESAL-ALIWI" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+                 <a href="https://www.linkedin.com/in/fares-al-aliwi-3ba613397?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+                 <a href="https://www.instagram.com/f.s_tech?igsh=dndzYXB1bmUwaHc2" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                 <a href="https://www.facebook.com/share/1AGATUtK5T/" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+             </div>
+    </footer>
+
+    <div class="modal" id="confirmModal">
+        <div class="modal-content">
+            <h3>تأكيد الحذف</h3>
+            <p>هل أنت متأكد من رغبتك في حذف هذا المنتج من السلة؟</p>
+            <div class="modal-actions">
+                <button class="confirm-btn" id="confirmDelete">نعم، حذف</button>
+                <button class="cancel-btn" id="cancelDelete">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const KEYS = ['local_cart','zoviraCart'];
+        let cartItems = [];
+        let discountPercentage = 0;
+        const shippingThreshold = 300;
+        const shippingCost = 4;
+        let itemToDelete = null;
+
+        function loadCartFromLocalStorage(){
+            for(const k of KEYS){
+                const raw = localStorage.getItem(k);
+                if(!raw) continue;
+                try{
+                    const parsed = JSON.parse(raw);
+                    if(Array.isArray(parsed)) return parsed.map(normFromArray);
+                    if(typeof parsed === 'object'){ 
+                        return Object.keys(parsed).map(id=>{
+                            const it = parsed[id];
+                            return {
+                                id: id,
+                                name: it.name || it.title || ('منتج '+id),
+                                price: Number(it.price||it.unit_price||0),
+                                quantity: Number(it.qty||it.quantity||1),
+                                image: it.image ? (it.image.startsWith('http')? it.image : ('public/images/products/'+it.image)) : ''
+                            };
+                        });
+                    }
+                }catch(e){console.warn('invalid cart',k,e)}
+            }
+            return [];
+        }
+
+        function normFromArray(it){
+            return {
+                id: it.id ?? (it.product_id || Math.random().toString(36).slice(2,8)),
+                name: it.name || it.title || 'منتج',
+                price: Number(it.price||0),
+                quantity: Number(it.quantity||it.qty||1),
+                image: it.image ? (it.image.startsWith('http')? it.image : ('public/images/products/'+it.image)) : ''
+            };
+        }
+
+        function saveNormalizedCart(){
+
+            localStorage.setItem('zoviraCart', JSON.stringify(cartItems));
+        }
+
+        function showNotification(message,type){
+            document.querySelectorAll('.notification').forEach(n=>n.remove());
+            const el = document.createElement('div'); el.className = 'notification '+type; el.textContent = message; document.body.appendChild(el);
+            setTimeout(()=>{ el.style.animation='slideOutDown 0.5s ease-out'; setTimeout(()=>el.remove(),500); },3000);
+        }
+
+        function renderCartItems(){
+            const cartList = document.getElementById('cartList');
+            if(cartItems.length===0){
+                cartList.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h3>سلة التسوق فارغة</h3>
+                        <p>يبدو أنك لم تضف أي منتجات إلى سلة التسوق بعد.</p>
+                        <a href="index.html#products" class="continue-shopping">تسوق الآن</a>
+                    </div>`;
+                updateCartSummary();
+                return;
+            }
+
+            let html = '';
+            cartItems.forEach(item=>{
+                html += `
+                    <div class="cart-item" data-id="${item.id}">
+                        <img src="${item.image||'public/images/placeholder.png'}" alt="${item.name}" class="cart-item-img">
+                        <div class="cart-item-details">
+                            <div>
+                                <h3 class="cart-item-title">${item.name}</h3>
+                                <p class="cart-item-price">${item.price}$ </p>
+                            </div>
+                            <div class="cart-item-actions">
+                                <div class="quantity-control">
+                                    <button class="quantity-btn decrease-quantity"><i class="fas fa-minus"></i></button>
+                                    <input type="number" class="quantity-input" value="${item.quantity}" min="1" readonly>
+                                    <button class="quantity-btn increase-quantity"><i class="fas fa-plus"></i></button>
+                                </div>
+                                <button class="remove-btn"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+
+            cartList.innerHTML = html;
+
+            document.querySelectorAll('.increase-quantity').forEach(btn=> btn.addEventListener('click', function(){
+                const id = this.closest('.cart-item').dataset.id; const it = cartItems.find(i=>String(i.id)===String(id)); if(it){ it.quantity++; persistAndRerender(); showNotification('تم تحديث الكمية','success') }
+            }));
+
+            document.querySelectorAll('.decrease-quantity').forEach(btn=> btn.addEventListener('click', function(){
+                const id = this.closest('.cart-item').dataset.id; const it = cartItems.find(i=>String(i.id)===String(id)); if(it && it.quantity>1){ it.quantity--; persistAndRerender(); showNotification('تم تحديث الكمية','success') }
+            }));
+
+            document.querySelectorAll('.remove-btn').forEach(btn=> btn.addEventListener('click', function(){
+                const id = this.closest('.cart-item').dataset.id; itemToDelete = id; document.getElementById('confirmModal').classList.add('active');
+            }));
+
+            updateCartSummary();
+        }
+
+        function persistAndRerender(){ saveNormalizedCart(); renderCartItems(); }
+
+        function updateCartSummary(){
+                const subtotalEl = document.getElementById('subtotal'); const discountEl = document.getElementById('discount'); const shippingEl = document.getElementById('shipping'); const totalEl = document.getElementById('total');
+                const vatEl = document.getElementById('vat'); const checkoutAmountEl = document.getElementById('checkoutAmount'); const deliveryEl = document.getElementById('deliveryEstimate');
+                let subtotal = 0; cartItems.forEach(i=> subtotal += (Number(i.price)||0)*(Number(i.quantity)||1));
+                const discountAmount = subtotal * discountPercentage;
+                const vatAmount = +(subtotal * 0.10).toFixed(2);
+                const shippingApplied = subtotal >= shippingThreshold ? 0 : shippingCost;
+                const total = +(subtotal - discountAmount + shippingApplied + vatAmount).toFixed(2);
+                subtotalEl.textContent = `${subtotal.toFixed(2)} $`;
+                discountEl.textContent = `${discountAmount.toFixed(2)} $`;
+                vatEl && (vatEl.textContent = `${vatAmount.toFixed(2)} $`);
+                shippingEl.textContent = shippingApplied===0? 'مجاني': `${shippingApplied} $`;
+                totalEl.textContent = `${total.toFixed(2)} $`;
+                checkoutAmountEl && (checkoutAmountEl.textContent = `${total.toFixed(2)} $`);
+
+                if(deliveryEl){ deliveryEl.textContent = subtotal>500 ? '1-2 أيام' : '2-3 أيام' }
+                renderSummaryItems();
+        }
+
+            function renderSummaryItems(){
+                const el = document.getElementById('summaryItems'); if(!el) return; el.innerHTML = '';
+                const max = 4; cartItems.slice(0,max).forEach(i=>{
+                    const lineTotal = ((Number(i.price)||0)*(Number(i.quantity)||1)).toFixed(2);
+                    const div = document.createElement('div'); div.className='summary-item';
+                    div.innerHTML = `<div class="s-thumb"><img src="${i.image||'public/images/placeholder.png'}" alt="${i.name}"></div><div class="s-meta"><div class="s-name">${i.name}</div><div class="s-qty">x${i.quantity}</div></div><div class="s-line">${lineTotal} $</div>`;
+                    el.appendChild(div);
+                });
+                if(cartItems.length>4){ const more = document.createElement('div'); more.className='summary-item'; more.innerHTML = `<div class="s-meta" style="text-align:right">+ ${cartItems.length-4} منتجات أخرى</div>`; el.appendChild(more) }
+            }
+
+        function applyCoupon(){ const code = document.getElementById('couponCode').value.trim(); const msg = document.getElementById('couponMessage'); if(!code){ msg.textContent='يرجى إدخال كود الخصم'; msg.className='coupon-message error'; return }
+            if(code==='ZOVIRA10'){ discountPercentage = 0.1; msg.textContent='تم تطبيق الخصم بنجاح!'; msg.className='coupon-message success' }
+            else if(code==='ZOVIRA20'){ discountPercentage = 0.2; msg.textContent='تم تطبيق الخصم بنجاح!'; msg.className='coupon-message success' }
+            else { discountPercentage = 0; msg.textContent='كود الخصم غير صالح'; msg.className='coupon-message error' }
+            updateCartSummary();
+        }
+
+        let walletBalance = 200; 
+        function loadWallet(){ const w = localStorage.getItem('walletBalance'); if(w!==null) walletBalance = Number(w); document.getElementById('walletBalance').textContent = `${walletBalance.toFixed(2)} $`; document.getElementById('walletInfo').style.display = walletBalance>0? 'flex':'none'; }
+
+        function applyWalletToggle(){ const cb = document.getElementById('useWallet'); if(!cb) return; cb.addEventListener('change', ()=>{ updateCartSummary(); }); }
+
+        function applyPaymentMethods(){ document.querySelectorAll('input[name="pay_method"]').forEach(r=> r.addEventListener('change', (e)=>{
+            const cardFields = document.getElementById('cardFields'); if(e.target.value==='card'){ cardFields.style.display='block' } else { cardFields.style.display='none' }
+        })) }
+
+        function finalizePaymentDisplay(){ const useW = document.getElementById('useWallet') && document.getElementById('useWallet').checked; const totalText = document.getElementById('total').textContent || '0'; const total = Number((totalText.replace(/[^\\d.]/g,''))||0);
+            let remaining = total; if(useW){ const used = Math.min(walletBalance, remaining); remaining = +(remaining - used).toFixed(2); }
+            const checkoutAmountEl = document.getElementById('checkoutAmount'); checkoutAmountEl.textContent = `${remaining.toFixed(2)} $`;
+            const checkoutBtn = document.getElementById('checkoutBtn'); if(remaining===0){ checkoutBtn.textContent = 'دفع بالمحفظة — تم الدفع'; checkoutBtn.classList.add('btn-gold'); checkoutBtn.href='#' } else { checkoutBtn.textContent = `إتمام الطلب — ${remaining.toFixed(2)} $`; checkoutBtn.href='thank_you.html' }
+        }
+
+        function handleCheckoutClick(e){
+            e.preventDefault();
+            if(cartItems.length===0){ showNotification('السلة فارغة','error'); return }
+            const useW = document.getElementById('useWallet') && document.getElementById('useWallet').checked;
+            const totalText = document.getElementById('total').textContent || '0';
+            const total = Number((totalText.replace(/[^\d.]/g,''))||0);
+            let remaining = total; if(useW){ const used = Math.min(walletBalance, remaining); remaining = +(remaining - used).toFixed(2); }
+
+            const payMethodEl = document.querySelector('input[name="pay_method"]:checked');
+            const payMethod = payMethodEl ? payMethodEl.value : 'cod';
+            if(payMethod==='card' && remaining>0){ const cn = document.getElementById('cardNumber').value.trim(); const cname = document.getElementById('cardName').value.trim(); if(!cn || !cname){ showNotification('يرجى إدخال بيانات البطاقة', 'error'); return } }
+
+            const order = {
+                id: 'ORD-' + Date.now(),
+                created_at: new Date().toISOString(),
+                items: cartItems,
+                totals: {
+                    subtotal: Number((function(){ let s=0; cartItems.forEach(i=> s += (Number(i.price)||0)*(Number(i.quantity)||1)); return s; })()),
+                    discount: Number((cartItems.reduce((s,i)=>s,0) * discountPercentage).toFixed(2)),
+                    vat: Number((function(){ let s=0; cartItems.forEach(i=> s += (Number(i.price)||0)*(Number(i.quantity)||1)); return +(s*0.15).toFixed(2); })()),
+                    shipping: (function(){ let s=0; cartItems.forEach(i=> s += (Number(i.price)||0)*(Number(i.quantity)||1)); return s>=shippingThreshold?0:shippingCost })(),
+                    grand: remaining
+                },
+                payment: { method: payMethod, used_wallet: useW, wallet_used_amount: useW? Math.min(walletBalance, total):0 }
+            };
+
+            localStorage.setItem('last_order', JSON.stringify(order));
+
+            if(useW){ const used = Math.min(walletBalance, total); walletBalance = +(walletBalance - used).toFixed(2); localStorage.setItem('walletBalance', walletBalance); }
+
+            localStorage.removeItem('local_cart'); localStorage.removeItem('zoviraCart'); localStorage.removeItem('savedCart'); cartItems = []; saveNormalizedCart();
+
+            window.location.href = 'thank_you.html';
+        }
+
+        function saveCartForLater(){ if(cartItems.length===0){ showNotification('سلة التسوق فارغة','error'); return } localStorage.setItem('savedCart', JSON.stringify(cartItems)); showNotification('تم حفظ السلة بنجاح!','success') }
+
+        function confirmDelete(){ if(itemToDelete===null) return; cartItems = cartItems.filter(i=> String(i.id)!==String(itemToDelete)); saveNormalizedCart(); renderCartItems(); showNotification('تم حذف المنتج من السلة','success'); itemToDelete=null; document.getElementById('confirmModal').classList.remove('active'); }
+
+        document.addEventListener('DOMContentLoaded', ()=>{
+            cartItems = loadCartFromLocalStorage();
+            renderCartItems();
+            document.getElementById('applyCoupon').addEventListener('click', applyCoupon);
+            document.getElementById('saveCart').addEventListener('click', saveCartForLater);
+            document.getElementById('confirmDelete').addEventListener('click', confirmDelete);
+            document.getElementById('cancelDelete').addEventListener('click', ()=>{ document.getElementById('confirmModal').classList.remove('active'); itemToDelete=null });
+            document.getElementById('confirmModal').addEventListener('click', function(e){ if(e.target===this){ this.classList.remove('active'); itemToDelete=null } });
+            loadWallet(); applyWalletToggle(); applyPaymentMethods();
+            const observer = new MutationObserver(()=> finalizePaymentDisplay());
+            observer.observe(document.getElementById('total'), { childList:true, subtree:true });
+            const checkoutBtn = document.getElementById('checkoutBtn'); if(checkoutBtn){ checkoutBtn.addEventListener('click', handleCheckoutClick); }
+        });
+    </script>
+</body>
+</html>
+
+
